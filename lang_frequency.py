@@ -1,7 +1,7 @@
 import argparse
 
 def load_data(filepath):
-    our_text = open(filepath)
+    our_text = open(filepath,encoding='cp1251')
     return our_text
 
 words = {} #Dictionary for the word count {'word':number}
@@ -11,16 +11,15 @@ def get_most_frequent_words(text):
     Split each line into words, modify and
     add to dictionary as a key and count of reps as a value.
     """
-    for i in text.readlines():
-        i = i.strip().lower()
-
+    for line in text.readlines():
+        #remove 'bad' chars in each line
         for char in ['*','-','–','"']:
-            i = i.replace(char,'')
+            line = line.replace(char,'')
 
-        for a in i.split():
-            words[a] = words.get(a,0) + 1
+        #add word to dictionary
+        for word in line.strip().lower().split():
+            words[word] = words.get(word,0) + 1
     text.close()
-
 
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description='''Show frequent words.''')
